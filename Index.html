@@ -1,149 +1,20 @@
 <!DOCTYPE html>
-<html lang="km">
+<html>
 <head>
-    <base target="_top">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ចូលប្រើប្រាស់ប្រព័ន្ធ</title>
-    
-    <style>
-        /* កំណត់ទម្រង់ទូទៅ និងរុញប្រអប់ Login ឱ្យនៅចំកណ្តាលអេក្រង់ */
-        *, *::before, *::after { box-sizing: border-box; }
-        body { 
-            font-family: 'Kantumruy Pro', Arial, sans-serif; 
-            background-color: #f4f7f6; 
-            margin: 0; 
-            height: 100vh; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            padding: 20px;
-        }
-        
-        .login-container { 
-            width: 100%; 
-            max-width: 400px; 
-            background: white; 
-            padding: 30px; 
-            border-radius: 8px; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
-        }
-        
-        .login-container h2 { 
-            text-align: center; 
-            color: #333; 
-            margin-top: 0; 
-            margin-bottom: 25px; 
-        }
-        
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; color: #555; }
-        
-        input[type="text"], input[type="password"] { 
-            width: 100%; 
-            padding: 12px; 
-            border: 1px solid #ccc; 
-            border-radius: 4px; 
-            font-family: inherit; 
-            font-size: 15px;
-            transition: border-color 0.3s;
-        }
-        
-        input[type="text"]:focus, input[type="password"]:focus {
-            border-color: #0d6efd;
-            outline: none;
-        }
-        
-        button { 
-            width: 100%; 
-            padding: 12px; 
-            background-color: #0d6efd; 
-            color: white; 
-            border: none; 
-            border-radius: 4px; 
-            cursor: pointer; 
-            font-size: 16px; 
-            font-weight: bold;
-            margin-top: 15px; 
-            font-family: inherit;
-            transition: background-color 0.3s;
-        }
-        
-        button:hover { background-color: #0b5ed7; }
-        button:disabled { background-color: #ccc; cursor: not-allowed; }
-        
-        #messageBox { 
-            text-align: center; 
-            margin-top: 15px; 
-            font-weight: bold; 
-            font-size: 14px;
-            display: none;
-        }
-        
-        .msg-loading { color: #0d6efd; }
-        .msg-error { color: #dc3545; }
-        .msg-success { color: #198754; }
-    </style>
+<title>Embedded Content</title>
 </head>
 <body>
-
-<div class="login-container">
-    <h2>ចូលប្រើប្រាស់ប្រព័ន្ធ</h2>
-    
-    <form id="loginForm" onsubmit="handleLoginSubmit(event)">
-        <div class="form-group">
-            <label for="username">ឈ្មោះគណនី:</label>
-            <input type="text" id="username" name="username" required placeholder="បញ្ចូលឈ្មោះគណនីរបស់អ្នក">
-        </div>
-        
-        <div class="form-group">
-            <label for="password">ពាក្យសម្ងាត់:</label>
-            <input type="password" id="password" name="password" required placeholder="បញ្ចូលពាក្យសម្ងាត់">
-        </div>
-        
-        <button type="submit" id="loginBtn">ចូលប្រព័ន្ធ</button>
-        
-        <div id="messageBox"></div>
-    </form>
-</div>
-
+<iframe src="https://script.google.com/macros/s/AKfycbwV-eQRfuUrZMYDZSAMSoIkXyKqbCfOi01iTP_7cR2UBfDiEMlVQk6z1UmOtBJlZtPc/exec"
+width="100%"
+height="100%"
+allowfullscreen="true"
+style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; border: none;"></iframe>
 <script>
-    function handleLoginSubmit(event) {
-        event.preventDefault(); // ការពារកុំឱ្យ Page Refresh
-        
-        const usernameInput = document.getElementById("username").value;
-        const passwordInput = document.getElementById("password").value;
-        const btn = document.getElementById("loginBtn");
-        const msgBox = document.getElementById("messageBox");
-        
-        // បង្ហាញស្ថានភាពកំពុងដំណើរការ
-        btn.disabled = true;
-        msgBox.style.display = "block";
-        msgBox.className = "msg-loading";
-        msgBox.innerText = "កំពុងផ្ទៀងផ្ទាត់... សូមរង់ចាំ!";
-
-        // ហៅ Function ពី Code.gs
-        google.script.run
-            .withSuccessHandler(function(response) {
-                if(response.status === "success") {
-                    msgBox.className = "msg-success";
-                    msgBox.innerText = "ចូលប្រព័ន្ធជោគជ័យ! កំពុងបញ្ជូនបន្ត...";
-                    
-                    // លោត (Link) ទៅកាន់ Form កម្មវិធី
-                    window.top.location.href = response.redirectUrl; 
-                } else {
-                    btn.disabled = false;
-                    msgBox.className = "msg-error";
-                    msgBox.innerText = response.message; // បង្ហាញសារកំហុស (ខុសលេខសម្ងាត់...)
-                }
-            })
-            .withFailureHandler(function(err) {
-                btn.disabled = false;
-                msgBox.className = "msg-error";
-                msgBox.innerText = "មានបញ្ហាភ្ជាប់ទៅប្រព័ន្ធ៖ " + err;
-            })
-            .verifyUserLogin(usernameInput, passwordInput);
-    }
+window.onload = function() {
+document.querySelector('iframe').requestFullscreen().catch((err) => {
+console.error(`Error attempting to enable full-screen mode: ${err.message}`);
+});
+};
 </script>
 </body>
 </html>
